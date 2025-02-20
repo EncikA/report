@@ -259,6 +259,7 @@
         <p>&copy; SK Stalon One Page Report Generator</p>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <script>
         function formatDate(inputDate) {
             const [year, month, day] = inputDate.split('-');
@@ -268,6 +269,10 @@
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('images');
         const fileList = document.getElementById('fileList');
+
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
 
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             dropZone.addEventListener(eventName, preventDefaults, false);
