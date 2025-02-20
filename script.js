@@ -10,23 +10,12 @@ function formatDateForOutput(inputDate) {
     return inputDate; // Return the original date if formatting fails
 }
 
-// Function to format date as dd/mm/yyyy with validation
-function formatDate(inputDate) {
-    // Split the input date into parts
-    const parts = inputDate.split('-');
-    if (parts.length !== 3) return 'Invalid Date'; // Basic check
-
-    const [year, month, day] = parts;
-
-    // Validate using Date object (month is 0-based in JS)
-    const date = new Date(year, month - 1, day);
-    if (isNaN(date.getTime())) return 'Invalid Date';
-
-    // Pad day and month with leading zeros
-    const paddedDay = String(day).padStart(2, '0');
-    const paddedMonth = String(month).padStart(2, '0');
-
-    return `${paddedDay}/${paddedMonth}/${year}`;
+// Function to format date as dd/mm/yyyy while typing
+function formatDateInput(input) {
+    let value = input.value.replace(/\D/g, ''); // Remove non-numeric characters
+    if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2);
+    if (value.length > 5) value = value.slice(0, 5) + '/' + value.slice(5, 9);
+    input.value = value;
 }
 
 const dropZone = document.getElementById('dropZone');
@@ -40,20 +29,17 @@ dropZone.addEventListener('click', () => {
 document.getElementById('reportForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent form from resetting
 
-    // Get and format the date
+    // Get and validate the date
     const rawDate = document.getElementById('date').value;
-    const formattedDate = formatDate(rawDate);
-
-    // Check if the date is valid
-    if (formattedDate === 'Invalid Date') {
+    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(rawDate)) {
         alert('Please enter a valid date in the format DD/MM/YYYY.');
-        return; // Stop submission if invalid
+        return;
     }
 
     // Collect form data
     const formData = {
         programName: document.getElementById('programName').value,
-        date: formattedDate, // Use the validated and formatted date
+        date: rawDate, // Use formatted date
         time: document.getElementById('time').value,
         location: document.getElementById('location').value,
         targetAudience: document.getElementById('targetAudience').value,
@@ -68,8 +54,8 @@ document.getElementById('reportForm').addEventListener('submit', function (event
     // Handle image uploads
     const imageFiles = Array.from(document.getElementById('images').files);
     const imagePreviews = imageFiles.slice(0, 4).map(file => {
-        const reader = new FileReader();
         return new Promise((resolve) => {
+            const reader = new FileReader();
             reader.onload = function (e) {
                 resolve(`<img src="${e.target.result}" alt="${file.name}">`);
             };
