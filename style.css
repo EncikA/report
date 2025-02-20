@@ -1,3 +1,6 @@
+Here is the corrected and formatted CSS code:
+
+```css
 /* General Styles */
 body {
     font-family: Arial, sans-serif;
@@ -34,7 +37,7 @@ label {
 
 input, textarea, button {
     padding: 10px;
-    border:  1px solid #ccc;
+    border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
 }
