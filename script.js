@@ -10,6 +10,19 @@ function formatDateForOutput(inputDate) {
     return inputDate; // Return the original date if formatting fails
 }
 
+// New function to format date as dd/mm/yyyy
+function formatDate(inputDate) {
+    const [year, month, day] = inputDate.split('-');
+    return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
+}
+
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('images');
+
+dropZone.addEventListener('click', () => {
+    fileInput.click();
+});
+
 // Script to handle form submission and generate output dynamically
 document.getElementById('reportForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent form from resetting
@@ -17,7 +30,7 @@ document.getElementById('reportForm').addEventListener('submit', function (event
     // Collect form data
     const formData = {
         programName: document.getElementById('programName').value,
-        date: document.getElementById('date').value, // Keep the date as dd/mm/yyyy
+        date: formatDate(document.getElementById('date').value), // Format the date as dd/mm/yyyy
         time: document.getElementById('time').value,
         location: document.getElementById('location').value,
         targetAudience: document.getElementById('targetAudience').value,
@@ -37,4 +50,9 @@ document.getElementById('reportForm').addEventListener('submit', function (event
             reader.onload = function (e) {
                 resolve(`<img src="${e.target.result}" alt="${file.name}">`);
             };
-            reader.readAsDataURL
+            reader.readAsDataURL(file);
+        });
+    });
+
+    // Further code for handling the form submission and generating the output...
+});
