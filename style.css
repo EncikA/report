@@ -1,0 +1,94 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: #007bff;
+    color: white;
+}
+
+main {
+    max-width: 794px; /* A4 width in pixels */
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input, textarea, button {
+    padding: 10px;
+    border:  1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    position: relative; /* Changed to relative */
+    width: 100%;
+}
+
+/* Image Grid */
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2x2 grid */
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.image-grid img {
+    width: 100%; /* Fit within the grid cell */
+    height: 150px; /* Fixed height for consistency */
+    object-fit: cover; /* Ensures images are resized proportionally */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Ensure the output fits within A4 dimensions */
+#output {
+    max-width: 794px; /* A4 width */
+    margin: 0 auto;
+    padding: 20px;
+    font-size: 14px; /* Smaller font size for compact layout */
+    line-height: 1.5;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Progress Indicator */
+#progress {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #007bff;
+}
