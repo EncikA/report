@@ -5,15 +5,28 @@ function formatDateForOutput(inputDate) {
         const day = dateParts[0];
         const month = dateParts[1];
         const year = dateParts[2];
-        return `${year}-${month}-${day}`; // Reformat to yyyy-mm-dd for internal use
+        return `${day}-${month}-${year}`; // Reformat to dd-mm-yyyy for internal use
     }
     return inputDate; // Return the original date if formatting fails
 }
 
-// New function to format date as dd/mm/yyyy
+// Function to format date as dd/mm/yyyy with validation
 function formatDate(inputDate) {
-    const [year, month, day] = inputDate.split('-');
-    return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
+    // Split the input date into parts
+    const parts = inputDate.split('-');
+    if (parts.length !== 3) return 'Invalid Date'; // Basic check
+
+    const [year, month, day] = parts;
+
+    // Validate using Date object (month is 0-based in JS)
+    const date = new Date(year, month - 1, day);
+    if (isNaN(date.getTime())) return 'Invalid Date';
+
+    // Pad day and month with leading zeros
+    const paddedDay = String(day).padStart(2, '0');
+    const paddedMonth = String(month).padStart(2, '0');
+
+    return `${paddedDay}/${paddedMonth}/${year}`;
 }
 
 const dropZone = document.getElementById('dropZone');
@@ -27,10 +40,20 @@ dropZone.addEventListener('click', () => {
 document.getElementById('reportForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent form from resetting
 
+    // Get and format the date
+    const rawDate = document.getElementById('date').value;
+    const formattedDate = formatDate(rawDate);
+
+    // Check if the date is valid
+    if (formattedDate === 'Invalid Date') {
+        alert('Please enter a valid date in the format DD/MM/YYYY.');
+        return; // Stop submission if invalid
+    }
+
     // Collect form data
     const formData = {
         programName: document.getElementById('programName').value,
-        date: formatDate(document.getElementById('date').value), // Format the date as dd/mm/yyyy
+        date: formattedDate, // Use the validated and formatted date
         time: document.getElementById('time').value,
         location: document.getElementById('location').value,
         targetAudience: document.getElementById('targetAudience').value,
