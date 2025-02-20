@@ -192,7 +192,7 @@
 
             <div class="form-group">
                 <label for="date">Tarikh:</label>
-                <input type="date" id="date" name="date" onkeydown="return true;">
+                <input type="text" id="date" name="date" placeholder="DD/MM/YYYY" required oninput="formatDateInput(this)">
             </div>
 
             <div class="form-group">
