@@ -5,17 +5,15 @@ function formatDateForOutput(inputDate) {
         const day = dateParts[0];
         const month = dateParts[1];
         const year = dateParts[2];
-        return `${day}-${month}-${year}`; // Reformat to dd-mm-yyyy for internal use
+        return `${year}-${month}-${day}`; // Reformat to yyyy-mm-dd for internal use
     }
     return inputDate; // Return the original date if formatting fails
 }
 
-// Function to format date as dd/mm/yyyy while typing
-function formatDateInput(input) {
-    let value = input.value.replace(/\D/g, ''); // Remove non-numeric characters
-    if (value.length > 2) value = value.slice(0, 2) + '/' + value.slice(2);
-    if (value.length > 5) value = value.slice(0, 5) + '/' + value.slice(5, 9);
-    input.value = value;
+// New function to format date as dd/mm/yyyy
+function formatDate(inputDate) {
+    const [year, month, day] = inputDate.split('-');
+    return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
 }
 
 const dropZone = document.getElementById('dropZone');
@@ -29,17 +27,10 @@ dropZone.addEventListener('click', () => {
 document.getElementById('reportForm').addEventListener('submit', function (event) {
     event.preventDefault(); // Prevent form from resetting
 
-    // Get and validate the date
-    const rawDate = document.getElementById('date').value;
-    if (!/^\d{2}\/\d{2}\/\d{4}$/.test(rawDate)) {
-        alert('Please enter a valid date in the format DD/MM/YYYY.');
-        return;
-    }
-
     // Collect form data
     const formData = {
         programName: document.getElementById('programName').value,
-        date: rawDate, // Use formatted date
+        date: formatDate(document.getElementById('date').value), // Format the date as dd/mm/yyyy
         time: document.getElementById('time').value,
         location: document.getElementById('location').value,
         targetAudience: document.getElementById('targetAudience').value,
@@ -54,8 +45,8 @@ document.getElementById('reportForm').addEventListener('submit', function (event
     // Handle image uploads
     const imageFiles = Array.from(document.getElementById('images').files);
     const imagePreviews = imageFiles.slice(0, 4).map(file => {
+        const reader = new FileReader();
         return new Promise((resolve) => {
-            const reader = new FileReader();
             reader.onload = function (e) {
                 resolve(`<img src="${e.target.result}" alt="${file.name}">`);
             };
